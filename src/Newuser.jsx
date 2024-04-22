@@ -56,8 +56,8 @@ function Newuser() {
       {(formik) => (
         <div className="container">
           <div className="row justify-content-center">
-            <div className="col-md-10">
-              <h1 className="text-center mt-2 mb-3">New User Registration</h1>
+            <div className="col-md-8">
+              <h3 className="text-center mt-3 mb-3">New User Registration</h3>
               <form action="">
                 <div className="form-floating mb-3">
                   <input
