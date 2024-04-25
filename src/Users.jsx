@@ -5,7 +5,7 @@ import axios from "axios";
 async function getUsers() {
   try {
     const response = await axios.get(
-      "https://jsonplaceholder.typicode.com/users"
+      "https://roadmap-day30-users-webserver.onrender.com/users"
     );
 
     // console.log(response)

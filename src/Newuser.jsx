@@ -1,31 +1,13 @@
+import axios from "axios";
 import { ErrorMessage, Field, Form, Formik, useFormik } from "formik";
 import * as Yup from "yup";
+import { useNavigate } from "react-router-dom";
 
-function Newuser() {
+function Newuser({ editUser }) {
+  const NavigateToUsers = useNavigate();
   return (
     <Formik
-      initialValues={{
-        name: "",
-        username: "",
-        email: "",
-        address: {
-          street: "",
-          suite: "",
-          city: "",
-          zipcode: "",
-          geo: {
-            lat: "",
-            lng: "",
-          },
-        },
-        phone: "",
-        website: "",
-        company: {
-          name: "",
-          catchPhrase: "",
-          bs: "",
-        },
-      }}
+      initialValues={{ ...editUser }}
       validationSchema={Yup.object({
         name: Yup.string()
           .max(15, "Must be 15 characters or less")
@@ -35,10 +17,10 @@ function Newuser() {
           .required("Required"),
         email: Yup.string().email("Invalid email address").required("Required"),
         address: Yup.object({
-          street: Yup.string(),
-          suite: Yup.string(),
-          city: Yup.string(),
-          zipcode: Yup.number(),
+          street: Yup.string().required("Required"),
+          suite: Yup.string().required("Required"),
+          city: Yup.string().required("Required"),
+          zipcode: Yup.number().required("Required"),
           geo: Yup.object({
             lat: Yup.string(),
             lng: Yup.string(),
@@ -47,18 +29,35 @@ function Newuser() {
         phone: Yup.string().required("Required"),
         website: Yup.string(),
         company: Yup.object({
-          name: Yup.string(),
+          name: Yup.string().required("Required"),
           catchPhrase: Yup.string(),
           bs: Yup.string(),
         }),
       })}
+      onSubmit={async (values, { setSubmitting }) => {
+        try {
+          await axios.post(
+            "https://roadmap-day30-users-webserver.onrender.com/users",
+            values
+          );
+
+          setTimeout(() => {
+            alert("User updated successfully!");
+          }, 100);
+          NavigateToUsers("/users");
+        } catch (error) {
+          console.log(error);
+        } finally {
+          setSubmitting(false);
+        }
+      }}
     >
       {(formik) => (
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-md-8">
               <h3 className="text-center mt-3 mb-3">New User Registration</h3>
-              <form action="">
+              <form action="" onSubmit={formik.handleSubmit}>
                 <div className="form-floating mb-3">
                   <input
                     type="text"
@@ -67,8 +66,14 @@ function Newuser() {
                     placeholder="John Doe"
                     {...formik.getFieldProps("name")}
                   />
-                  <label for="floatingInput">Name</label>
+
+                  {formik.touched.name && formik.errors.name ? (
+                    <div>{formik.errors.name}</div>
+                  ) : null}
+
+                  <label htmlFor="name">Name</label>
                 </div>
+
                 <div className="form-floating mb-3">
                   <input
                     type="text"
@@ -78,7 +83,11 @@ function Newuser() {
                     {...formik.getFieldProps("username")}
                   />
 
-                  <label for="floatingInput">Username</label>
+                  {formik.touched.username && formik.errors.username ? (
+                    <div>{formik.errors.username}</div>
+                  ) : null}
+
+                  <label htmlFor="username">Username</label>
                 </div>
 
                 <div className="form-floating mb-3">
@@ -89,7 +98,10 @@ function Newuser() {
                     placeholder="Johndoe@email.com"
                     {...formik.getFieldProps("email")}
                   />
-                  <label for="floatingInput">Email</label>
+                  {formik.touched.email && formik.errors.email ? (
+                    <div>{formik.errors.email}</div>
+                  ) : null}
+                  <label htmlFor="email">Email</label>
                 </div>
 
                 <div className="row gap-1">
@@ -98,11 +110,17 @@ function Newuser() {
                       <input
                         type="text"
                         className="form-control"
-                        id="address.street"
+                        id="address-street"
                         placeholder=""
                         {...formik.getFieldProps("address.street")}
                       />
-                      <label for="floatingInput">Street</label>
+
+                      {formik.touched.address?.street &&
+                      formik.errors.address?.street ? (
+                        <div>{formik.errors.address.street}</div>
+                      ) : null}
+
+                      <label htmlFor="address-street">Street</label>
                     </div>
                   </div>
 
@@ -111,11 +129,15 @@ function Newuser() {
                       <input
                         type="text"
                         className="form-control"
-                        id="address.suite"
+                        id="address-suite"
                         placeholder=""
                         {...formik.getFieldProps("address.suite")}
                       />
-                      <label for="floatingInput">Suite</label>
+                      {formik.touched.address?.suite &&
+                      formik.errors.address?.suite ? (
+                        <div>{formik.errors.address.suite}</div>
+                      ) : null}
+                      <label htmlFor="address-suite">Suite</label>
                     </div>
                   </div>
                 </div>
@@ -126,11 +148,17 @@ function Newuser() {
                       <input
                         type="text"
                         className="form-control"
-                        id="address.city"
+                        id="address-city"
                         placeholder=""
                         {...formik.getFieldProps("address.city")}
                       />
-                      <label for="floatingInput">City</label>
+
+                      {formik.touched.address?.city &&
+                      formik.errors.address?.city ? (
+                        <div>{formik.errors.address.city}</div>
+                      ) : null}
+
+                      <label htmlFor="address-city">City</label>
                     </div>
                   </div>
                   <div className="col-md">
@@ -138,11 +166,15 @@ function Newuser() {
                       <input
                         type="text"
                         className="form-control"
-                        id="address.zipcode"
+                        id="address-zipcode"
                         placeholder=""
                         {...formik.getFieldProps("address.zipcode")}
                       />
-                      <label for="floatingInput">Zipcode</label>
+                      {formik.touched.address?.zipcode &&
+                      formik.errors.address?.zipcode ? (
+                        <div>{formik.errors.address.zipcode}</div>
+                      ) : null}
+                      <label htmlFor="address-zipcode">Zipcode</label>
                     </div>
                   </div>
                 </div>
@@ -153,11 +185,16 @@ function Newuser() {
                       <input
                         type="text"
                         className="form-control"
-                        id="geo.lat"
+                        id="address-geo-lat"
                         placeholder=""
-                        {...formik.getFieldProps("geo.lat")}
+                        {...formik.getFieldProps("address.geo.lat")}
                       />
-                      <label for="floatingInput">Latitude</label>
+
+                      {formik.touched.address?.geo?.lat &&
+                      formik.errors.address?.geo?.lat ? (
+                        <div>{formik.errors.address.geo.lat}</div>
+                      ) : null}
+                      <label htmlFor="address-geo-lat">Latitude</label>
                     </div>
                   </div>
 
@@ -166,11 +203,17 @@ function Newuser() {
                       <input
                         type="text"
                         className="form-control"
-                        id="geo.lng"
+                        id="address-geo-lng"
                         placeholder=""
-                        {...formik.getFieldProps("geo.lng")}
+                        {...formik.getFieldProps("address.geo.lng")}
                       />
-                      <label for="floatingInput">Longitude</label>
+
+                      {formik.touched.address?.geo?.lng &&
+                      formik.errors.address?.geo?.lng ? (
+                        <div>{formik.errors.address.geo.lng}</div>
+                      ) : null}
+
+                      <label htmlFor="address-geo-lng">Longitude</label>
                     </div>
                   </div>
                 </div>
@@ -185,7 +228,12 @@ function Newuser() {
                         placeholder=""
                         {...formik.getFieldProps("phone")}
                       />
-                      <label for="floatingInput">Phone</label>
+
+                      {formik.touched.phone && formik.errors.phone ? (
+                        <div>{formik.errors.phone}</div>
+                      ) : null}
+
+                      <label htmlFor="phone">Phone</label>
                     </div>
                   </div>
                   <div className="col-md">
@@ -197,7 +245,11 @@ function Newuser() {
                         placeholder=""
                         {...formik.getFieldProps("website")}
                       />
-                      <label for="floatingInput">Website</label>
+                      {formik.touched.website && formik.errors.website ? (
+                        <div>{formik.errors.website}</div>
+                      ) : null}
+
+                      <label htmlFor="website">Website</label>
                     </div>
                   </div>
                 </div>
@@ -206,39 +258,54 @@ function Newuser() {
                   <input
                     type="text"
                     className="form-control"
-                    id="company.name"
+                    id="company-name"
                     placeholder=""
                     {...formik.getFieldProps("company.name")}
                   />
-                  <label for="floatingInput">Company Name</label>
+
+                  {formik.touched.company?.name &&
+                  formik.errors.company?.name ? (
+                    <div>{formik.errors.company.name}</div>
+                  ) : null}
+
+                  <label htmlFor="company-name">Company Name</label>
                 </div>
 
                 <div className="form-floating mb-3">
                   <input
                     type="text"
                     className="form-control"
-                    id="company.catchPhrase"
+                    id="company-catchPhrase"
                     placeholder=""
                     {...formik.getFieldProps("company.catchPhrase")}
                   />
-                  <label for="floatingInput">Company Catchphrase</label>
+                  {formik.touched.company?.catchPhrase &&
+                  formik.errors.company?.catchPhrase ? (
+                    <div>{formik.errors.company.catchPhrase}</div>
+                  ) : null}
+                  <label htmlFor="company-catchPhrase">
+                    Company Catchphrase
+                  </label>
                 </div>
 
                 <div className="form-floating mb-3">
                   <input
                     type="text"
                     className="form-control"
-                    id="company.bs"
+                    id="company-bs"
                     placeholder=""
                     {...formik.getFieldProps("company.bs")}
                   />
-                  <label for="floatingInput">
+                  {formik.touched.company?.bs && formik.errors.company?.bs ? (
+                    <div>{formik.errors.company.bs}</div>
+                  ) : null}
+                  <label htmlFor="company-bs">
                     Company Business Strategy (BS)
                   </label>
                 </div>
                 <div className="row justify-content-center mb-3">
                   <div className="col-md-2">
-                    <button type="button" class="btn btn-primary">
+                    <button type="submit" className="btn btn-primary">
                       Submit
                     </button>
                   </div>

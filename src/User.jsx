@@ -1,11 +1,11 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate, json } from "react-router-dom";
 
 async function getUser(userId) {
   try {
     const response = await axios.get(
-      `https://jsonplaceholder.typicode.com/users/${userId}`
+      `https://roadmap-day30-users-webserver.onrender.com/users/${userId}`
     );
 
     return response.data;
@@ -14,11 +14,34 @@ async function getUser(userId) {
   }
 }
 
-function User() {
+function User({ setEditUser }) {
   const [user, setUser] = useState({});
   const [loading, setLoading] = useState(true);
   const { userId } = useParams();
   const parsedUserId = parseInt(userId, 10);
+  const navigateToUsers = useNavigate();
+  const navigateToEditUser = useNavigate();
+
+  const handleUserDelete = async (userId) => {
+    try {
+      const response = await axios.delete(
+        `https://roadmap-day30-users-webserver.onrender.com/users/${userId}`
+      );
+
+      setTimeout(() => {
+        alert(response.data.message);
+      }, 100);
+      navigateToUsers("/users");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleUserEdit = (userData) => {
+    setEditUser(userData);
+
+    navigateToEditUser(`/users/edit/${userData.id}`);
+  };
 
   if (isNaN(parsedUserId)) {
     return <div>Invalid user ID: {userId}</div>;
@@ -36,7 +59,7 @@ function User() {
       }
     }
     fetchData();
-  }, []);
+  }, [parsedUserId]);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -139,8 +162,22 @@ function User() {
                 <tr>
                   <td colSpan={2}>
                     <div className="d-flex gap-2 justify-content-center">
-                      <button className="btn btn-primary">Edit</button>
-                      <button className="btn btn-danger">Delete</button>
+                      <button
+                        onClick={() => {
+                          handleUserEdit(user);
+                        }}
+                        className="btn btn-primary"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="btn btn-danger"
+                        onClick={() => {
+                          handleUserDelete(userId);
+                        }}
+                      >
+                        Delete
+                      </button>
                     </div>
                   </td>
                 </tr>
