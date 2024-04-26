@@ -34,23 +34,43 @@ function Newuser({ editUser }) {
           bs: Yup.string(),
         }),
       })}
-      onSubmit={async (values, { setSubmitting }) => {
-        try {
-          await axios.post(
-            "https://roadmap-day30-users-webserver.onrender.com/users",
-            values
-          );
+      onSubmit={
+        editUser?.id
+          ? async (values, { setSubmitting }) => {
+              try {
+                await axios.put(
+                  `https://roadmap-day30-users-webserver.onrender.com/users/${editUser.id}`,
+                  values
+                );
 
-          setTimeout(() => {
-            alert("User updated successfully!");
-          }, 100);
-          NavigateToUsers("/users");
-        } catch (error) {
-          console.log(error);
-        } finally {
-          setSubmitting(false);
-        }
-      }}
+                setTimeout(() => {
+                  alert("User updated successfully!");
+                }, 100);
+                NavigateToUsers("/users");
+              } catch (error) {
+                console.log(error);
+              } finally {
+                setSubmitting(false);
+              }
+            }
+          : async (values, { setSubmitting }) => {
+              try {
+                await axios.post(
+                  "https://roadmap-day30-users-webserver.onrender.com/users",
+                  values
+                );
+
+                setTimeout(() => {
+                  alert("User created successfully!");
+                }, 100);
+                NavigateToUsers("/users");
+              } catch (error) {
+                console.log(error);
+              } finally {
+                setSubmitting(false);
+              }
+            }
+      }
     >
       {(formik) => (
         <div className="container">
