@@ -31,6 +31,12 @@ function App() {
     },
   };
   const [editUser, setEditUser] = useState(userInfo);
+  const location = useLocation();
+
+  useEffect(() => {
+    console.log("current path: ", location.pathname);
+    if (location.pathname === "/newuser") setEditUser(userInfo);
+  }, [location.pathname]);
 
   return (
     <>
