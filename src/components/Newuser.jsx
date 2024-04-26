@@ -78,9 +78,16 @@ function Newuser({ editUser, setEditUser, userInfo }) {
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-md-8">
-              <h3 className="text-center mt-3 mb-3 text-muted">
-                New User Registration
-              </h3>
+              {" "}
+              {editUser?.id ? (
+                <h3 className="text-center mt-3 mb-3 text-muted">
+                  Update User
+                </h3>
+              ) : (
+                <h3 className="text-center mt-3 mb-3 text-muted">
+                  New User Registration
+                </h3>
+              )}
               <form action="" onSubmit={formik.handleSubmit}>
                 <div className="form-floating mb-3">
                   <input
