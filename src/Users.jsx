@@ -53,7 +53,7 @@ function Users() {
                 </tr>
               </thead>
               <tbody>
-                {users.map((user, index) => {
+                {users?.map((user, index) => {
                   return (
                     <Userrow key={user.id} user={user} serialNo={index + 1} />
                   );
