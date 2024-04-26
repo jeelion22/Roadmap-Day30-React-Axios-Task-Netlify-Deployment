@@ -35,7 +35,8 @@ function App() {
 
   useEffect(() => {
     console.log("current path: ", location.pathname);
-    if (location.pathname === "/newuser") setEditUser(userInfo);
+    if (["/users", "/newuser", "/"].includes(location.pathname))
+      setEditUser(userInfo);
   }, [location.pathname]);
 
   return (
