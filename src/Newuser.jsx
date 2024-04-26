@@ -3,7 +3,7 @@ import { ErrorMessage, Field, Form, Formik, useFormik } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 
-function Newuser({ editUser }) {
+function Newuser({ editUser, setEditUser, userInfo }) {
   const NavigateToUsers = useNavigate();
   return (
     <Formik
@@ -50,6 +50,7 @@ function Newuser({ editUser }) {
               } catch (error) {
                 console.log(error);
               } finally {
+                setEditUser(userInfo);
                 setSubmitting(false);
               }
             }
@@ -67,6 +68,7 @@ function Newuser({ editUser }) {
               } catch (error) {
                 console.log(error);
               } finally {
+                setEditUser(userInfo);
                 setSubmitting(false);
               }
             }

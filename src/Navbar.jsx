@@ -5,9 +5,9 @@ function Navbar() {
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
       <div className="container-fluid">
-        <a className="navbar-brand" href="#">
-          Navbar
-        </a>
+        <Link className="navbar-brand" to="/">
+          Axios
+        </Link>
         <button
           className="navbar-toggler"
           type="button"

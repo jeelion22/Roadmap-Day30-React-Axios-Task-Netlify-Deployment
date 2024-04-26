@@ -3,8 +3,9 @@ import Navbar from "./Navbar";
 import Newuser from "./Newuser";
 import Users from "./Users";
 import User from "./User";
-import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import Home from "./Home";
 
 function App() {
   const userInfo = {
@@ -29,14 +30,14 @@ function App() {
       bs: "",
     },
   };
-
   const [editUser, setEditUser] = useState(userInfo);
 
   return (
-    <BrowserRouter>
+    <>
       <Navbar />
       <Routes>
-        <Route path="/newuser" element={<Newuser />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/newuser" element={<Newuser editUser={editUser} />} />
         <Route path="/users" element={<Users />} />
         <Route
           path="/users/:userId"
@@ -44,10 +45,16 @@ function App() {
         />
         <Route
           path="/users/edit/:userId"
-          element={<Newuser editUser={editUser} />}
+          element={
+            <Newuser
+              editUser={editUser}
+              userInfo={userInfo}
+              setEditUser={setEditUser}
+            />
+          }
         />
       </Routes>
-    </BrowserRouter>
+    </>
   );
 }
 
