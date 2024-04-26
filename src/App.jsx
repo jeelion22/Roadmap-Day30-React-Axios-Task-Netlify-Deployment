@@ -1,11 +1,11 @@
 import "bootstrap/dist/css/bootstrap.css";
-import Navbar from "./Navbar";
-import Newuser from "./Newuser";
-import Users from "./Users";
-import User from "./User";
+import Navbar from "./components/Navbar";
+import Newuser from "./components/Newuser";
+import Users from "./components/Users";
+import User from "./components/User";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
-import Home from "./Home";
+import Home from "./components/Home";
 
 function App() {
   const userInfo = {
