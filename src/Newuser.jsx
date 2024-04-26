@@ -20,7 +20,7 @@ function Newuser({ editUser }) {
           street: Yup.string().required("Required"),
           suite: Yup.string().required("Required"),
           city: Yup.string().required("Required"),
-          zipcode: Yup.number().required("Required"),
+          zipcode: Yup.string().required("Required"),
           geo: Yup.object({
             lat: Yup.string(),
             lng: Yup.string(),
